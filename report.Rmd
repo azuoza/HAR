@@ -1,0 +1,8 @@
+---
+title: "HAR report"
+author: "A. Zuoza"
+date: "Friday, April 24, 2015"
+output: html_document
+---
+
+This is will be an report of prediction model based on Human Activity Recognition data.   
