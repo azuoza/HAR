@@ -5,4 +5,60 @@ date: "Friday, April 24, 2015"
 output: html_document
 ---
 
-This is will be an report of prediction model based on Human Activity Recognition data.   
+```{r library, warning=FALSE, echo=FALSE, message=FALSE}
+library(caret)
+library(randomForest)
+```
+
+```{r loading_enviroment}
+load(file = "./test2.RData")
+load(file = "./test3.RData")
+```
+
+#Summary
+
+This is the report of Practical Machine Learning course project.   
+The data was downloaded from Coursera Course Web page. 
+[Train data is here](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv) 
+and [Test data is here](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv). <br>
+
+The train data have `r dim(data.all)[1]` observations, one predictor (variable name 
+classe) and `r dim(data.all)[2] - 1` regressors. <br>
+
+The two models was build:   
+ - model1 with 36 predictors;     
+ - model2 with 40 predictors;
+ 
+For model1, as predictors was choosen all gyrometer, accelerometer and magnetometer 
+data for belt, arm, dumbbell and forearm on x, y and z axis's.    
+On model2 I added tottal acceleration for belt, arm, dumebell and forearm.   
+
+Both models was buid on 90% subset from original data set. I used Random Forest 
+metode for models buiding.    
+The accuracy on test data of model1 was `r round(model3$results[1, 2], digits = 3)` and 
+accuracy of the model2 was `rround(model5$results[1, 2],digits = 3)`. The results of model2 
+(with more predictors), was a little bit better as for model1. The predictions corss 
+table is shown bellow:
+
+```{r c_tab}
+table(predict3, predict5)
+```
+
+In this table we can see, that most differences are in the prediction of "B" and 
+"C" classes.
+
+The model1 and model2 was tested with "real" test data (20 predictions for submission) showed, that 
+it was only one difference between model1 and model2 predictions. The predictions 
+corss table on "real" data is shown bellow:
+
+```{r c_tab_final}
+data.test.real <- read.csv("../pml-testing.csv")
+predic.final3 <- predict(model3, data.test.real)
+predic.final5 <- predict(model5, data.test.real)
+table(predic.final3, predic.final5)
+```
+
+And here we can see, that the diference (on this data set) is only on prediction 
+of "B" and "C" classes.    
+
+
